@@ -14,4 +14,8 @@ report:
 	# ./roomkey -bud RKEY -csv ../../csvfiles_temp/roomkey.csv -guestinfo ../../csvfiles_temp/guest.csv -noauth -testmode=1
 	./roomkey -bud RKEY -csv ../../csvfiles_temp/roomkey.csv -noauth -testmode=1 > report1.txt
 	./roomkey -bud RKEY -csv ../../csvfiles_temp/roomkey.csv -guestinfo ../../csvfiles_temp/guest.csv -noauth -testmode=1 > report2.txt
-all: clean db build report
+
+secure:
+	@rm -f config.json confdev.json confprod.json
+
+all: clean db build report secure

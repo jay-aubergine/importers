@@ -13,4 +13,7 @@ build:
 report: 
 	./onesite -bud ISO -csv ../../csvfiles_temp/onesite.csv -noauth -testmode=1 > report.txt
 
-all: clean db build report
+secure:
+	@rm -f config.json confdev.json confprod.json
+
+all: clean db build report secure

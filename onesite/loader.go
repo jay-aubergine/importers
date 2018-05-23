@@ -399,19 +399,6 @@ func loadOneSiteCSV(
 		}
 	}
 
-	/*// getIndexAndUnit used to get index and unit value from trace<TYPE>CSVMap map
-	getIndexAndUnit := func(traceDataMap map[int]int, index int) (int, string) {
-		var onesiteIndex int
-		var unit string
-		if onesiteIndex, ok := traceDataMap[index]; ok {
-			if unit, ok := traceUnitMap[onesiteIndex]; ok {
-				return onesiteIndex, unit
-			}
-			return onesiteIndex, unit
-		}
-		return onesiteIndex, unit
-	}*/
-
 	// getIndexAndUnit used to get index and unit value from trace<TYPE>CSVMap map
 	getIndexAndUnit := func(traceDataMap map[int][]int, index int, itemNo int) (int, string) {
 		var onesiteIndex int
@@ -832,17 +819,6 @@ func clearSplittedTempCSVFiles(timestamp string) {
 		os.Remove(filePath)
 	}
 }
-
-/*func printMap(csvData map[int][]string) {
-	var mapKey []int
-	for key := range csvData {
-		mapKey = append(mapKey, key)
-	}
-	sort.Ints(mapKey)
-	for _, key := range mapKey {
-		fmt.Printf("%+v: %+v\n\n", key, csvData[key])
-	}
-}*/
 
 func CSVHandler(
 	ctx context.Context,
