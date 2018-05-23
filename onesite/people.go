@@ -86,7 +86,7 @@ func ReadPeopleCSVData(
 		if core.StringInSlice(name, traceDuplicatePeople["name"]) {
 			warnPrefix := "W:<" + core.DBTypeMapStrings[core.DBPeople] + ">:"
 			// mark it as a warning so customer can validate it
-			csvErrors[rowIndex] = append(csvErrors[rowIndex],
+			csvErrors[rowIndex+1] = append(csvErrors[rowIndex+1],
 				warnPrefix+"There is at least one other person with the name \""+rowName+"\" "+
 					"who also has no unique identifiers such as cell phone number or email.",
 			)
@@ -101,7 +101,7 @@ func ReadPeopleCSVData(
 			core.StringInSlice(name, traceDuplicatePeople["name"]) {
 			warnPrefix := "W:<" + core.DBTypeMapStrings[core.DBPeople] + ">:"
 			// mark it as a warning so customer can validate it
-			csvErrors[rowIndex] = append(csvErrors[rowIndex],
+			csvErrors[rowIndex+1] = append(csvErrors[rowIndex+1],
 				warnPrefix+"There is at least one other person with the same name \""+name+"\" and work phone \""+phone+"\""+
 					" and no other unique identifiers such as cell phone or email",
 			)
