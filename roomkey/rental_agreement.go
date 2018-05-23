@@ -142,7 +142,7 @@ func GetRentalAgreementCSVRow(
 		// then set it first
 		suppliedValue, found := DefaultValues[rentalAgreementField.Name]
 		if found {
-			dataMap[i] = suppliedValue
+			dataMap[i] = strings.TrimSpace(suppliedValue)
 		}
 
 		// =========================================================
@@ -163,7 +163,7 @@ func GetRentalAgreementCSVRow(
 
 		// if has not value then continue
 		if header, ok := csvHeaderMap[MappedFieldName]; ok {
-			dataMap[i] = roomkeyRow[header.Index]
+			dataMap[i] = strings.TrimSpace(roomkeyRow[header.Index])
 		} else {
 			continue
 		}

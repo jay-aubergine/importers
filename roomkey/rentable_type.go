@@ -8,6 +8,7 @@ import (
 	"path"
 	"reflect"
 	"rentroll/rlib"
+	"strings"
 	"time"
 )
 
@@ -134,7 +135,7 @@ func GetRentableTypeCSVRow(
 		// then set it first
 		suppliedValue, found := DefaultValues[rentableTypeField.Name]
 		if found {
-			dataMap[i] = suppliedValue
+			dataMap[i] = strings.TrimSpace(suppliedValue)
 		}
 
 		// get mapping field
@@ -142,7 +143,7 @@ func GetRentableTypeCSVRow(
 
 		// if has not value then continue
 		if header, ok := csvHeaderMap[MappedFieldName]; ok {
-			dataMap[i] = roomkeyRow[header.Index]
+			dataMap[i] = strings.TrimSpace(roomkeyRow[header.Index])
 		} else {
 			continue
 		}

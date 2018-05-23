@@ -142,7 +142,7 @@ func GetRentableCSVRow(
 		// then set it first
 		suppliedValue, found := DefaultValues[rentableField.Name]
 		if found {
-			dataMap[i] = suppliedValue
+			dataMap[i] = strings.TrimSpace(suppliedValue)
 		}
 
 		// =========================================================
@@ -168,7 +168,7 @@ func GetRentableCSVRow(
 
 		// if has not value then continue
 		if header, ok := csvHeaderMap[MappedFieldName]; ok {
-			dataMap[i] = roomkeyRow[header.Index]
+			dataMap[i] = strings.TrimSpace(roomkeyRow[header.Index])
 		} else {
 			continue
 		}
@@ -229,7 +229,7 @@ func GetRentableTypeRef(
 	orderedFields := []string{}
 
 	// append floor plan
-	orderedFields = append(orderedFields, csvRow[csvHeaderMap["RoomType"].Index])
+	orderedFields = append(orderedFields, strings.TrimSpace(csvRow[csvHeaderMap["RoomType"].Index]))
 
 	// append today date
 	orderedFields = append(orderedFields, defaults["DtStart"])
