@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"rentroll/rlib"
 	"strconv"
+	"strings"
 )
 
 // GetFieldMapping reads json file and loads
@@ -158,4 +159,11 @@ func GetImportedCount(ctx context.Context, summaryCount map[int]map[string]int, 
 		}
 	}
 	return nil
+}
+
+// DgtGrpSepToDgts converts separated group of digits string to
+// plain digits string without any separator
+// ex., 1,200,000 -> 1200000
+func DgtGrpSepToDgts(dstr string) string {
+	return strings.NewReplacer(",", "").Replace(dstr)
 }

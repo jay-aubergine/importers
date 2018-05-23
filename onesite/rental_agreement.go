@@ -253,7 +253,7 @@ func GetRentableSpec(
 	// append rentable
 	orderedFields = append(orderedFields, csvRow[csvHeaderMap["Unit"].Index])
 	// append contractrent
-	orderedFields = append(orderedFields, csvRow[csvHeaderMap["Rent"].Index])
+	orderedFields = append(orderedFields, core.DgtGrpSepToDgts(csvRow[csvHeaderMap["Rent"].Index]))
 
 	return strings.Join(orderedFields, ",")
 }

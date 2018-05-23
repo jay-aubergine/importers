@@ -175,6 +175,11 @@ func GetRentableTypeCSVRow(
 		} else {
 			continue
 		}
+
+		// this condition is kept here to convert group seperated MarketRate value to normal form
+		if rentableTypeField.Name == "MarketRate" {
+			dataMap[i] = core.DgtGrpSepToDgts(dataMap[i])
+		}
 	}
 
 	dataArray := []string{}
