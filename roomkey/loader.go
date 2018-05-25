@@ -116,12 +116,11 @@ func loadRoomKeyCSV(
 
 		// check it is description row
 		if isRoomKeyDescriptionRow(t[rowIndex-1]) {
-			csvRowDataMap[currentDataRowIndex][2] += descriptionFieldSep + strings.TrimSpace(t[rowIndex-1][2])
-			// csvRowDataMap[currentDataRowIndex].Description += descriptionFieldSep + strings.TrimSpace(t[rowIndex-1][rowTypeDetectionCSVIndex["description"]])
+			csvRowDataMap[currentDataRowIndex][rowTypeDetectionCSVIndex["description"]] += descriptionFieldSep + strings.TrimSpace(t[rowIndex-1][rowTypeDetectionCSVIndex["description"]])
 			continue
 		}
 
-		skipRow, csvRow := loadRoomKeyCSVRow(csvHeaderList, csvHeaderMap, t[rowIndex-1], isPageZero)
+		skipRow, csvRow := loadRoomKeyCSVRow(csvHeaderMap, t[rowIndex-1], isPageZero)
 
 		if skipRow {
 			// in case blank row detected
@@ -144,7 +143,7 @@ func loadRoomKeyCSV(
 	// =================================
 	// DELETE DATA RELATED TO BUSINESS ID
 	// =================================
-	// detele business related data before starting to import in database
+	// delete business related data before starting to import in database
 	_, err = rlib.DeleteBusinessFromDB(ctx, business.BID)
 	if err != nil {
 		rlib.Ulog("INTERNAL ERROR <DELETE BUSINESS>: %s\n", err.Error())
@@ -522,12 +521,14 @@ func loadRoomKeyCSV(
 	// GET TCID FOR EACH ROW FROM PEOPLE CSV AND UPDATE TCID MAP
 	// ========================================================
 
-	for roomkeyIndex := range traceTCIDMap {
-		tcid, _ := rlib.GetTCIDByNote(ctx, tracePeopleNote[roomkeyIndex])
-		// for duplicant case, it won't be found so need check here
-		if tcid != 0 {
-			traceTCIDMap[roomkeyIndex] = tcidPrefix + strconv.Itoa(int(tcid))
-		}
+	tcidMap, _ := rlib.GetTCIDByNote(ctx, "%"+roomkeyNotesPrefix+"%")
+
+	for tcid, note := range tcidMap {
+		note_temp := strings.SplitN(note, ".", 2)
+		note_temp = strings.SplitN(note_temp[0], ":", 2)
+		roomkeyIndex, _ := strconv.Atoi(note_temp[1])
+
+		traceTCIDMap[roomkeyIndex] = tcidPrefix + strconv.Itoa(int(tcid))
 	}
 
 	// ==============================================================

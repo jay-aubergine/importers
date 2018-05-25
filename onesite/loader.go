@@ -660,12 +660,18 @@ func loadOneSiteCSV(
 	// ========================================================
 	// GET TCID FOR EACH ROW FROM PEOPLE CSV AND UPDATE TCID MAP
 	// ========================================================
-	for onesiteIndex := range traceTCIDMap {
-		tcid, _ := rlib.GetTCIDByNote(ctx, getPeopleNoteString(onesiteIndex+1, currentTimeFormat))
-		// for duplicant case, it won't be found so need check here
-		if tcid != 0 {
-			traceTCIDMap[onesiteIndex] = tcidPrefix + strconv.Itoa(int(tcid))
-		}
+
+	// here we pass "0" as a parameter just to satisfy the function
+	// later on in next line we neglect the last character i.e. "0" (that we passed to function)
+	noteString := getPeopleNoteString(0, currentTimeFormat)
+	tcidMap, _ := rlib.GetTCIDByNote(ctx, "%"+noteString[:len(noteString)-1]+"%")
+
+	for tcid, note := range tcidMap {
+		note_temp := strings.SplitN(note, "$", 2)
+		note_temp = strings.SplitN(note_temp[1], "$", 2)
+		onesiteIndex, _ := strconv.Atoi(note_temp[1])
+
+		traceTCIDMap[onesiteIndex-1] = tcidPrefix + strconv.Itoa(int(tcid))
 	}
 
 	// ==============================================================
@@ -718,7 +724,6 @@ func loadOneSiteCSV(
 			&rentableCSVData,
 			&avoidDuplicateUnit,
 			currentTime,
-			currentTimeFormat,
 			userRRValues,
 			&oneSiteFieldMap.RentableCSV,
 			traceTCIDMap,
@@ -738,7 +743,6 @@ func loadOneSiteCSV(
 				t[rowIndex],
 				&rentalAgreementCSVData,
 				currentTime,
-				currentTimeFormat,
 				userRRValues,
 				&oneSiteFieldMap.RentalAgreementCSV,
 				traceTCIDMap,
