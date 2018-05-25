@@ -62,7 +62,6 @@ func ReadRentalAgreementCSVData(
 	csvRow []string,
 	rentalAgreementCSVData *[][]string,
 	currentTime time.Time,
-	currentTimeFormat string,
 	suppliedValues map[string]string,
 	rentalAgreementStruct *core.RentalAgreementCSV,
 	traceTCIDMap map[int]string,
@@ -102,8 +101,7 @@ func ReadRentalAgreementCSVData(
 	// get csv row data
 	csvRowData := GetRentalAgreementCSVRow(
 		csvRow, rentalAgreementStruct,
-		currentTimeFormat, rentableDefaultData,
-		csvHeaderMap,
+		rentableDefaultData, csvHeaderMap,
 	)
 
 	// add this row data to slice
@@ -124,7 +122,6 @@ func ReadRentalAgreementCSVData(
 func GetRentalAgreementCSVRow(
 	oneSiteRow []string,
 	fieldMap *core.RentalAgreementCSV,
-	timestamp string,
 	DefaultValues map[string]string,
 	csvHeaderMap map[string]core.CSVHeader,
 ) []string {

@@ -63,14 +63,12 @@ func ReadRentableCSVData(
 	rentableCSVData *[][]string,
 	avoidDuplicateUnit *[]string,
 	currentTime time.Time,
-	currentTimeFormat string,
 	suppliedValues map[string]string,
 	rentableStruct *core.RentableCSV,
 	traceTCIDMap map[int]string,
 	csvErrors map[int][]string,
 	rrStatus string,
 	csvHeaderMap map[string]core.CSVHeader,
-	// traceRentableUnitMap map[int]string,
 	traceRentableUnitMap map[string]int,
 ) {
 	currentYear, currentMonth, currentDate := currentTime.Date()
@@ -106,8 +104,7 @@ func ReadRentableCSVData(
 	// get csv row data
 	csvRowData := GetRentableCSVRow(
 		csvRow, rentableStruct,
-		currentTimeFormat, rentableDefaultData,
-		csvHeaderMap,
+		rentableDefaultData, csvHeaderMap,
 	)
 
 	// get unit from the onesite row
@@ -157,7 +154,6 @@ func ReadRentableCSVData(
 func GetRentableCSVRow(
 	oneSiteRow []string,
 	fieldMap *core.RentableCSV,
-	timestamp string,
 	DefaultValues map[string]string,
 	csvHeaderMap map[string]core.CSVHeader,
 ) []string {

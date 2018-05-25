@@ -5,14 +5,6 @@ import (
 	"strings"
 )
 
-// tells which type of row is
-var csvRowType = map[string]int{
-	"page":        0,
-	"header":      1,
-	"record":      2,
-	"description": 3,
-}
-
 // by which index, it will decide tyep of row
 var rowTypeDetectionCSVIndex = map[string]int{
 	"page":        0,
@@ -21,7 +13,7 @@ var rowTypeDetectionCSVIndex = map[string]int{
 
 // loadRoomKeyCSVRow used to load data from slice
 // into CSVRow struct and return that struct
-func loadRoomKeyCSVRow(csvHeaderList []core.CSVHeader, csvHeaderMap map[string]core.CSVHeader,
+func loadRoomKeyCSVRow(csvHeaderMap map[string]core.CSVHeader,
 	data []string, isPageZero bool) (bool, []string) {
 
 	skipRow := false
