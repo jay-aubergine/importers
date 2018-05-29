@@ -241,15 +241,15 @@ func GetRUserSpec(
 	// orderedFields = append(orderedFields, defaults["TCID"])
 
 	// // append lease start
-	// if csvRow.LeaseStart == "" {
+	// if csvRow[csvHeaderMap["LeaseStart"].Index] == "" {
 	// 	orderedFields = append(orderedFields, defaults["DtStart"])
 	// } else {
-	// 	orderedFields = append(orderedFields, csvRow.LeaseStart)
+	// 	orderedFields = append(orderedFields, csvRow[csvHeaderMap["LeaseStart"].Index])
 	// }
 
 	// // don't append default value from DtStop
 	// // even if it is blank then we might just leave it as blank
-	// orderedFields = append(orderedFields, csvRow.LeaseEnd)
+	// orderedFields = append(orderedFields, csvRow[csvHeaderMap["LeaseEnd"].Index])
 
 	// return strings.Join(orderedFields, ",")
 }

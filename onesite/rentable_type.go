@@ -87,7 +87,6 @@ func ReadRentableTypeCSVData(
 	// through first loop in main program
 	sqft, _ := strconv.ParseInt(csvRow[csvHeaderMap["SQFT"].Index], 10, 64)
 	tempCard := CARD{
-		//currently taking 1 as BID because we are not passing rlib.Business
 		BID:      business.BID,
 		Style:    rentableTypeStyle,
 		SqFt:     sqft,
@@ -103,16 +102,9 @@ func ReadRentableTypeCSVData(
 	// make rentableType data from userSuppliedValues and defaultValues
 	rentableTypeDefaultData := map[string]string{}
 
-	//currently ignoring as no default data supplied
 	for k, v := range suppliedValues {
 		rentableTypeDefaultData[k] = v
 	}
-
-	// rentableTypeDefaultData["RentCycle"] = "6"
-	// rentableTypeDefaultData["Proration"] = "4"
-	// rentableTypeDefaultData["GSRPC"] = "4"
-	// rentableTypeDefaultData["BUD"] = "ISO"
-	// rentableTypeDefaultData["ManageToBudget"] = "1"
 
 	rentableTypeDefaultData["DtStart"] = DtStart
 	rentableTypeDefaultData["DtStop"] = DtStop
@@ -130,9 +122,7 @@ func ReadRentableTypeCSVData(
 
 	// need to map on next row index of temp csv as first row is header line
 	// and recordCount initialized with 0 value
-	// traceCSVData[*recordCount+1] = rowIndex + 1
 	traceCSVData[*recordCount+1] = append(traceCSVData[*recordCount+1], rowIndex+1)
-
 }
 
 // GetRentableTypeCSVRow used to create rentabletype

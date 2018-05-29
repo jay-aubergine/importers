@@ -81,11 +81,7 @@ func ReadCustomAttributeCSVData(
 
 	for customAttributeField, customAttributeConfig := range customAttributeMap {
 
-		// reflectedOneSiteRow := reflect.ValueOf(csvRow).Elem()
-
 		// get the value for key field from onesite row
-		// value := reflectedOneSiteRow.FieldByName(customAttributeField).Interface().(string)
-
 		value := csvRow[csvHeaderMap[customAttributeField].Index]
 
 		ValueFound := core.StringInSlice(value, avoidData[customAttributeField])
@@ -98,7 +94,6 @@ func ReadCustomAttributeCSVData(
 		// csv row csvRowData used to write data it holds
 		csvRowData := []string{}
 		csvRowData = append(csvRowData, suppliedValues["BUD"])
-		// csvRowData = append(csvRowData, "ISO") // temporary because currently we are not passing suppliedValues
 		csvRowData = append(csvRowData, customAttributeConfig["Name"])
 		csvRowData = append(csvRowData, customAttributeConfig["ValueType"])
 		csvRowData = append(csvRowData, value)
@@ -110,7 +105,6 @@ func ReadCustomAttributeCSVData(
 
 		// need to map on next row index of temp csv as first row is header line
 		// and recordCount initialized with 0 value
-		// traceCSVData[*recordCount+1] = rowIndex + 1
 		traceCSVData[*recordCount+1] = append(traceCSVData[*recordCount+1], rowIndex+1)
 	}
 }

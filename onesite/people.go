@@ -110,14 +110,6 @@ func ReadPeopleCSVData(
 		}
 	}
 
-	// suppliedValues := map[string]string{}
-
-	// suppliedValues["RentCycle"] = "6"
-	// suppliedValues["Proration"] = "4"
-	// suppliedValues["GSRPC"] = "4"
-	// suppliedValues["BUD"] = "ISO"
-	// suppliedValues["ManageToBudget"] = "1"
-
 	// get csv row data
 	csvRowData := GetPeopleCSVRow(
 		csvRow, peopleStruct,
@@ -132,7 +124,6 @@ func ReadPeopleCSVData(
 
 	// need to map on next row index of temp csv as first row is header line
 	// and recordCount initialized with 0 value
-	// traceCSVData[*recordCount+1] = rowIndex + 1
 	traceCSVData[*recordCount+1] = append(traceCSVData[*recordCount+1], rowIndex+1)
 }
 
