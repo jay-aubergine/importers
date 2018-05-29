@@ -1,6 +1,9 @@
 package onesite
 
-import "rentroll/rcsv"
+import (
+	"importers/core"
+	"rentroll/rcsv"
+)
 
 // TempCSVStoreName holds the name of csvstore folder
 var TempCSVStoreName = "temp_CSVs"
@@ -20,13 +23,6 @@ var FieldDefaultValues = map[string]string{
 	"Renewal":        "2", // always take to default this one
 }
 
-// RentableUseStatusCSV is mapping for rentable status between onesite and rentroll
-var RentableUseStatusCSV = map[string]string{
-	"vacant":   "1",
-	"occupied": "1",
-	"model":    "7",
-}
-
 // prefixCSVFile is a map which holds the prefix of csv files
 // so that temporarily program can create csv files with this
 var prefixCSVFile = map[string]string{
@@ -35,6 +31,42 @@ var prefixCSVFile = map[string]string{
 	"rental_agreement": "rentalAgreement_",
 	"rentable":         "rentable_",
 	"custom_attribute": "customAttribute_",
+}
+
+// RentableUseStatusCSV is mapping for rentable status between onesite and rentroll
+var RentableUseStatusCSV = map[string]string{
+	"vacant":   "1",
+	"occupied": "1",
+	"model":    "7",
+}
+
+// canWriteCSVStatusMap holds the set of csv types with key of status value
+// used in checking if csv file for db type is able to perform write operation
+// for the given status value
+var canWriteCSVStatusMap = map[string][]int{
+	// if rentable status is blank then still you can write data to these CSVs
+	"": {
+		core.RENTABLETYPECSV,
+		core.RENTABLECSV,
+		core.CUSTOMATTRIUTESCSV,
+	},
+	"occupied": {
+		core.RENTABLETYPECSV,
+		core.PEOPLECSV,
+		core.RENTABLECSV,
+		core.RENTALAGREEMENTCSV,
+		core.CUSTOMATTRIUTESCSV,
+	},
+	"model": {
+		core.RENTABLETYPECSV,
+		core.RENTABLECSV,
+		core.CUSTOMATTRIUTESCSV,
+	},
+	"vacant": {
+		core.RENTABLETYPECSV,
+		core.RENTABLECSV,
+		core.CUSTOMATTRIUTESCSV,
+	},
 }
 
 // CSVLoadHandler struct is for routines that want to table-ize their loading.

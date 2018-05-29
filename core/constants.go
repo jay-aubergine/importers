@@ -13,6 +13,20 @@ type CSVHeader struct {
 	HeaderText string
 }
 
+// constants for csv types
+const (
+	// RENTABLETYPECSV NO
+	RENTABLETYPECSV = iota
+	// CUSTOMATTRIUTESCSV NO
+	CUSTOMATTRIUTESCSV = iota
+	// PEOPLECSV NO
+	PEOPLECSV = iota
+	// RENTABLECSV NO
+	RENTABLECSV = iota
+	// RENTALAGREEMENTCSV NO
+	RENTALAGREEMENTCSV = iota
+)
+
 // const for db types
 const (
 	DBRentableType    = iota

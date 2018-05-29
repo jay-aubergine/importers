@@ -312,36 +312,46 @@ func loadOneSiteCSV(
 		// we can import data or not
 		csvRentableStatus := t[rowIndex][csvHeaderMap["UnitLeaseStatus"].Index]
 		_, rrUseStatus, _ := IsValidRentableUseStatus(csvRentableStatus)
+		csvTypesSet := canWriteCSVStatusMap[rrUseStatus]
+		var canReadData bool
 
-		ReadRentableTypeCSVData(
-			&RentableTypeCSVRecordCount,
-			rowIndex,
-			traceRentableTypeCSVMap,
-			t[rowIndex],
-			&rentableTypeCSVData,
-			&avoidDuplicateRentableTypeData,
-			currentTime,
-			userRRValues,
-			&oneSiteFieldMap.RentableTypeCSV,
-			customAttributesRefData,
-			csvHeaderMap,
-			business,
-		)
+		// check first that for this row's status rentableType data can be read
+		canReadData = core.IntegerInSlice(core.RENTABLETYPECSV, csvTypesSet)
+		if canReadData {
+			ReadRentableTypeCSVData(
+				&RentableTypeCSVRecordCount,
+				rowIndex,
+				traceRentableTypeCSVMap,
+				t[rowIndex],
+				&rentableTypeCSVData,
+				&avoidDuplicateRentableTypeData,
+				currentTime,
+				userRRValues,
+				&oneSiteFieldMap.RentableTypeCSV,
+				customAttributesRefData,
+				csvHeaderMap,
+				business,
+			)
+		}
 
-		ReadCustomAttributeCSVData(
-			&CustomAttributeCSVRecordCount,
-			rowIndex,
-			traceCustomAttributeCSVMap,
-			t[rowIndex],
-			&customAttributeCSVData,
-			avoidDuplicateCustomAttributeData,
-			userRRValues,
-			csvHeaderMap,
-		)
+		// check first that for this row's status custom attributes data can be read
+		canReadData = core.IntegerInSlice(core.CUSTOMATTRIUTESCSV, csvTypesSet)
+		if canReadData {
+			ReadCustomAttributeCSVData(
+				&CustomAttributeCSVRecordCount,
+				rowIndex,
+				traceCustomAttributeCSVMap,
+				t[rowIndex],
+				&customAttributeCSVData,
+				avoidDuplicateCustomAttributeData,
+				userRRValues,
+				csvHeaderMap,
+			)
+		}
 
-		// read data for people csv
-		// ignore row if useStatus is "vacant"
-		if rrUseStatus == "occupied" {
+		// check first that for this row's status people data can be read
+		canReadData = core.IntegerInSlice(core.PEOPLECSV, csvTypesSet)
+		if canReadData {
 			traceTCIDMap[rowIndex] = ""
 			ReadPeopleCSVData(
 				&PeopleCSVRecordCount,
@@ -507,7 +517,7 @@ func loadOneSiteCSV(
 			// *****************************************************************
 			/*
 				else if strings.Contains(errText, dupTransactantWithCellPhone) {
-					lineNo, _, ok := parseLineAndErrorFromRCSV(err, dbType)
+					lineNo, itemNo, _, ok := parseLineAndErrorFromRCSV(err, dbType)
 					if !ok {
 						// INTERNAL ERROR - RETURN FALSE
 						return false
@@ -515,10 +525,10 @@ func loadOneSiteCSV(
 					// get tracedatamap
 					traceDataMap := getTraceDataMap(traceDataMapName)
 					// now get the original row index of imported onesite csv and Unit value
-					onesiteIndex, unit := getIndexAndUnit(traceDataMap, lineNo)
+					onesiteIndex, unit := getIndexAndUnit(traceDataMap, lineNo, itemNo)
 					// load csvRow from dataMap to get email
-					csvRow := *csvRowDataMap[onesiteIndex]
-					pCellNo := csvRow.PhoneNumber
+					csvRow := t[onesiteIndex]
+					pCellNo := csvRow[csvHeaderMap["PhoneNumber"].Index]
 					// get tcid from cellphonenumber
 					t, tErr := rlib.GetTransactantByPhoneOrEmail(ctx, business.BID, pCellNo)
 					if tErr != nil {
@@ -715,27 +725,33 @@ func loadOneSiteCSV(
 		// we can import data or not
 		csvRentableStatus := t[rowIndex][csvHeaderMap["UnitLeaseStatus"].Index]
 		_, rrUseStatus, _ := IsValidRentableUseStatus(csvRentableStatus)
+		csvTypesSet := canWriteCSVStatusMap[rrUseStatus]
+		var canReadData bool
 
-		ReadRentableCSVData(
-			&RentableCSVRecordCount,
-			rowIndex,
-			traceRentableCSVMap,
-			t[rowIndex],
-			&rentableCSVData,
-			&avoidDuplicateUnit,
-			currentTime,
-			userRRValues,
-			&oneSiteFieldMap.RentableCSV,
-			traceTCIDMap,
-			csvErrors,
-			rrUseStatus,
-			csvHeaderMap,
-			traceRentableUnitMap,
-		)
+		// check first that for this row's status rentable data can be read
+		canReadData = core.IntegerInSlice(core.RENTABLECSV, csvTypesSet)
+		if canReadData {
+			ReadRentableCSVData(
+				&RentableCSVRecordCount,
+				rowIndex,
+				traceRentableCSVMap,
+				t[rowIndex],
+				&rentableCSVData,
+				&avoidDuplicateUnit,
+				currentTime,
+				userRRValues,
+				&oneSiteFieldMap.RentableCSV,
+				traceTCIDMap,
+				csvErrors,
+				rrUseStatus,
+				csvHeaderMap,
+				traceRentableUnitMap,
+			)
+		}
 
-		// read data for rental agreement csv
-		// where useStatus is "occupied"
-		if rrUseStatus == "occupied" {
+		// check first that for this row's status rental aggrement data can be read
+		canReadData = core.IntegerInSlice(core.RENTALAGREEMENTCSV, csvTypesSet)
+		if canReadData {
 			ReadRentalAgreementCSVData(
 				&RentalAgreementCSVRecordCount,
 				rowIndex,
