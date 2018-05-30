@@ -142,7 +142,7 @@ func generateDetailedReport(
 		}
 
 		// get unit from map
-		unit, _ := unitMap[rowIndex]
+		unit, _ := unitMap[rowIndex-1]
 
 		// used to separate errors, warnings
 		rowErrors, rowWarnings := []string{}, []string{}
