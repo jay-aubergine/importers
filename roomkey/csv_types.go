@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// by which index, it will decide tyep of row
+// by which index, it will decide type of row
 var rowTypeDetectionCSVIndex = map[string]int{
 	"page":        0,
 	"description": 2,
@@ -28,14 +28,8 @@ func loadRoomKeyCSVRow(csvHeaderMap map[string]core.CSVHeader,
 	}
 
 	for _, header := range csvHeaderMap {
-		if isPageZero && (header.HeaderText == "room" ||
-			header.HeaderText == "roomtype" ||
-			header.HeaderText == "rate" ||
-			header.HeaderText == "ratename" ||
-			header.HeaderText == "groupcorporatename") {
-
+		if isPageZeroData(isPageZero, header) {
 			csvRow[header.Index] = data[header.Index+3]
-
 		} else {
 			csvRow[header.Index] = data[header.Index]
 		}
@@ -86,17 +80,9 @@ func isRoomKeyHeaderLine(rowHeaders []string, isPageZero bool,
 				}
 				// we take colIndex-3 if it is data of page 0
 				// because there are 3 blank columns
-				if isPageZero {
-					if csvHeaderList[i].HeaderText == "room" ||
-						csvHeaderList[i].HeaderText == "roomtype" ||
-						csvHeaderList[i].HeaderText == "rate" ||
-						csvHeaderList[i].HeaderText == "ratename" ||
-						csvHeaderList[i].HeaderText == "groupcorporatename" {
-
-						csvHeaderList[i].Index = colIndex - 3
-						continue
-					}
-
+				if isPageZeroData(isPageZero, csvHeaderList[i]) {
+					csvHeaderList[i].Index = colIndex - 3
+					continue
 				}
 				csvHeaderList[i].Index = colIndex
 			}
@@ -117,6 +103,19 @@ func isRoomKeyHeaderLine(rowHeaders []string, isPageZero bool,
 		csvHeaderMap[header.Name] = header
 	}
 	return headersFound, csvHeaderMap
+}
+
+// isPageZeroData checks if the row supplied belongs to page 0 or not
+func isPageZeroData(isPageZero bool, header core.CSVHeader) bool {
+	if isPageZero && (header.HeaderText == "room" ||
+		header.HeaderText == "roomtype" ||
+		header.HeaderText == "rate" ||
+		header.HeaderText == "ratename" ||
+		header.HeaderText == "groupcorporatename") {
+
+		return true
+	}
+	return false
 }
 
 // isRoomKeyPageRow check row is used for new page records
