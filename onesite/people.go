@@ -82,16 +82,16 @@ func ReadPeopleCSVData(
 	}
 
 	// flag for name of people who has no email or phone
-	if name != "" && email == "" && phone == "" {
-		if core.StringInSlice(name, traceDuplicatePeople["name"]) {
+	if name != "" {
+		if !core.StringInSlice(name, traceDuplicatePeople["name"]) {
+			traceDuplicatePeople["name"] = append(traceDuplicatePeople["name"], name)
+		} else if email == "" && phone == "" {
 			warnPrefix := "W:<" + core.DBTypeMapStrings[core.DBPeople] + ">:"
 			// mark it as a warning so customer can validate it
 			csvErrors[rowIndex+1] = append(csvErrors[rowIndex+1],
 				warnPrefix+"There is at least one other person with the name \""+rowName+"\" "+
 					"who also has no unique identifiers such as cell phone number or email.",
 			)
-		} else {
-			traceDuplicatePeople["name"] = append(traceDuplicatePeople["name"], name)
 		}
 	}
 
