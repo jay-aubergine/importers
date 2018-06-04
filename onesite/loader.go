@@ -132,13 +132,12 @@ func loadOneSiteCSV(
 				missingHeaders = append(missingHeaders, string(csvHeaderList[i].Name))
 			}
 		}
-
 		headerError := "Required data column(s) missing: "
 		headerError += strings.Join(missingHeaders, ", ")
 
 		// ******** special entry ***********
-		/*// -1 means there is no data
-		internalErrFlag = false*/
+		// -1 means there is no data column
+		internalErrFlag = false
 		csvErrors[-1] = append(csvErrors[-1], headerError)
 		return traceUnitMap, csvErrors, internalErrFlag
 	}
